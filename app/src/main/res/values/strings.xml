@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">SeirekiWareki</string>
+    <string name="tab_text_1">西暦→和暦</string>
+    <string name="tab_text_2">和暦→西暦</string>
+    <string name="tab_text_3">情報</string>
+</resources>
