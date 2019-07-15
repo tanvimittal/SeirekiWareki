@@ -7,18 +7,33 @@
                                                    android:layout_height="match_parent"
                                                    tools:context=".ui.main.PlaceholderFragment">
 
-    <TextView
-            android:id="@+id/section_label"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            tools:layout_constraintTop_creator="1"
-            android:layout_marginStart="@dimen/activity_horizontal_margin"
-            android:layout_marginEnd="@dimen/activity_horizontal_margin"
-            android:layout_marginTop="@dimen/activity_vertical_margin"
-            android:layout_marginBottom="@dimen/activity_vertical_margin"
-            android:text="和暦日付"
-            tools:layout_constraintLeft_creator="1"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/constraintLayout"/>
 
+    <EditText
+            android:hint="@string/j_date_input"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/warekiDate" app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" android:layout_marginLeft="24dp"
+            android:layout_marginStart="24dp" app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginTop="24dp" app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintHorizontal_bias="0.503" app:layout_constraintVertical_bias="0.396"/>
+    <TextView
+            android:text="変換された西暦日付"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/seirekiResult"
+            app:layout_constraintTop_toBottomOf="@+id/warekiDate" android:layout_marginBottom="24dp"
+            app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginLeft="24dp" android:layout_marginStart="24dp" app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="24dp" android:layout_marginRight="24dp"/>
+    <Button
+            android:text="変換"
+            android:layout_width="wrap_content"
+            android:layout_height="31dp"
+            android:id="@+id/btnConvert"
+            app:layout_constraintTop_toBottomOf="@+id/seirekiResult" android:layout_marginBottom="24dp"
+            app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="24dp" android:layout_marginRight="24dp"
+            app:layout_constraintStart_toStartOf="parent" android:layout_marginLeft="24dp"
+            android:layout_marginStart="24dp"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

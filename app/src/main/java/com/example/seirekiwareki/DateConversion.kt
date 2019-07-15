@@ -21,55 +21,108 @@ import com.example.seirekiwareki.REIWA
 
 import com.example.seirekiwareki.MONTH
 import com.example.seirekiwareki.DAY
+import java.text.SimpleDateFormat
+import java.util.*
 
 public class DateConversion{
 
+    var era : String? = null
     fun seirekiToWareki(seirekiDate: String) : String{
 
-        var warekiDate : String = ""
-        var era : String = ""
+        val df = SimpleDateFormat("yyyy/MM/dd")
 
 
-        var seirekiRetDate : String
-        seirekiRetDate   = seirekiDate.replace("/", "")
 
-        // 年、月、日を取得する。
-        var year : Int
-        var month : Int
-        var day : Int
+        val date = df.parse(seirekiDate)
 
-        year = seirekiRetDate.substring(0,4).toInt()
-        month = seirekiRetDate.substring(4,6).toInt()
-        day = seirekiRetDate.substring(6).toInt()
 
-        if (seirekiRetDate >= meijiStartDate && seirekiRetDate <= meijiEndDate)
-        {
-            era = MEIJI
-            year = year-1868+1
+
+        val cal = Calendar.getInstance()
+
+
+
+        cal.time = date
+
+        var year = cal.get(Calendar.YEAR)
+
+
+
+        var month = cal.get(Calendar.MONTH)+1
+
+
+
+        var day = cal.get(Calendar.DAY_OF_MONTH)
+
+
+
+
+
+
+
+        run loop@{
+
+
+
+            GENGOU_DATA.forEach {
+
+
+
+                val calStartDate = Calendar.getInstance()
+
+
+
+                calStartDate.time = it["startDate"] as Date
+
+
+
+
+
+
+
+                // 日付が startDate より大きかったら終わり
+
+
+
+                if (cal.compareTo(calStartDate) >= 0) {
+
+                    era = it["kanji"] as String
+
+
+
+                    year = year - calStartDate.get(Calendar.YEAR) + 1
+
+
+
+                    return@loop
+
+
+
+                }
+
+
+
+            }
+
+
+
         }
-        else if (seirekiRetDate >= taishoStartDate && seirekiRetDate <= taishoEndDate)
-        {
-            era = TAISHO
-            year = year-1912+1
-        }
-        else if (seirekiRetDate >= meijiStartDate && seirekiRetDate <= meijiEndDate)
-        {
-            era = SHOWA
-            year = year-1926+1
-        }
-        else if (seirekiRetDate >= heiseiStartDate && seirekiRetDate <= heiseiEndDate)
-        {
-            era = HEISEI
-            year = year-1989+1
-        }
-        else if (seirekiRetDate >= reiwaStartDate && seirekiRetDate <= reiwaEndDate)
-        {
-            era = REIWA
-            year = year-2019+1
+        return if (era == null) {
+
+
+
+            "非対応です。"
+
+
+
+        } else {
+
+
+
+            "${era}${year}年${month}月${day}日"
+
+
+
         }
 
-        warekiDate = year.toString() + era+ month.toString() + MONTH + day.toString()+ DAY
-
-        return warekiDate
     }
 }

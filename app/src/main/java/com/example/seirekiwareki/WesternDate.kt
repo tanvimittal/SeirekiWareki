@@ -51,7 +51,7 @@ class WesternDate: Fragment(){
                 ).show()
             }
 
-               }
+        }
 
         return parentHolder
     }
