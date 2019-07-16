@@ -41,13 +41,14 @@ import com.example.seirekiwareki.MEIJI_LAST_YEAR
 import com.example.seirekiwareki.TAISHO_LAST_YEAR
 import com.example.seirekiwareki.SHOWA_LAST_YEAR
 import com.example.seirekiwareki.HEISEI_LAST_YEAR
+import kotlinx.android.synthetic.main.fragment_japanese_date.*
 import java.lang.Exception
 import java.text.SimpleDateFormat
 
 
 import kotlin.collections.ArrayList
 
-public class JapaneseDate : Fragment(){
+class JapaneseDate : Fragment(){
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         //XMLを取得する。
@@ -66,26 +67,27 @@ public class JapaneseDate : Fragment(){
                 // 空白の場合
                 if (TextUtils.isEmpty(warekiDate)){
                     Toast.makeText(it1, NO_J_INPUT, Toast.LENGTH_LONG).show()
+                    
                 }
 
                 else{
                     val seirekiDate = getSeirekiDate(warekiDate)
 
-                    if (NO_ERA.equals(seirekiDate)){
+                    if (getString(R.string.no_era).equals(seirekiDate)){
                         Toast.makeText(it1, seirekiDate, Toast.LENGTH_LONG).show()
                     }
 
-                    else if(ERR_MEIJI.equals(seirekiDate) || ERR_TAISHO.equals(seirekiDate) ||
-                        ERR_SHOWA.equals(seirekiDate) || ERR_HEISEI.equals(seirekiDate)){
+                    else if(getString(R.string.err_meiji).equals(seirekiDate) || getString(R.string.err_taisho).equals(seirekiDate) ||
+                        getString(R.string.err_showa).equals(seirekiDate) || getString(R.string.err_heisei).equals(seirekiDate)){
                         Toast.makeText(it1, seirekiDate + "\n" + CORRECT_VAL, Toast.LENGTH_LONG).show()
                     }
 
-                    else if (INCORRECT_VAL.equals(seirekiDate)){
+                    else if (getString(R.string.incorrect_val).equals(seirekiDate)){
                         Toast.makeText(it1, seirekiDate, Toast.LENGTH_LONG).show()
                     }
 
                     else{
-                        Toast.makeText(it1, seirekiDate, Toast.LENGTH_LONG).show()
+                        seirekiResult.text = seirekiDate
                     }
                 }
             }
@@ -96,12 +98,7 @@ public class JapaneseDate : Fragment(){
     fun getSeirekiDate(warekiDate : String) : String{
 
         var seirekiDate: String = INCORRECT_VAL
-        var result : List<String>
-        var delimiters : String = ""
         var year : Int
-        var month : Int
-        var day : Int
-
 
         try{
 
@@ -113,7 +110,7 @@ public class JapaneseDate : Fragment(){
                  seirekiDate =    checkDate(warekiDate, MEIJI_E)
                 }
                 else {
-                    return ERR_MEIJI
+                    return getString(R.string.err_meiji)
                 }
 
             }
@@ -125,7 +122,7 @@ public class JapaneseDate : Fragment(){
                     seirekiDate =    checkDate(warekiDate, TAISHO_E)
                 }
                 else {
-                    return ERR_TAISHO
+                    return getString(R.string.err_taisho)
                 }
             }
 
@@ -136,7 +133,7 @@ public class JapaneseDate : Fragment(){
                     seirekiDate =    checkDate(warekiDate, SHOWA_E)
                 }
                 else {
-                    return ERR_SHOWA
+                    return getString(R.string.err_showa)
                 }
 
             }
@@ -148,7 +145,7 @@ public class JapaneseDate : Fragment(){
                     seirekiDate =    checkDate(warekiDate, HEISEI_E)
                 }
                 else {
-                    return ERR_HEISEI
+                    return getString(R.string.err_heisei)
                 }
 
             }
@@ -157,15 +154,15 @@ public class JapaneseDate : Fragment(){
             else if (warekiDate.contains(REIWA) || warekiDate.contains(REIWA_S) || warekiDate.contains(REIWA_E)){
 
                if(year >= YEAR_START ){
-                   seirekiDate =    checkDate(warekiDate, HEISEI_E)
+                   seirekiDate =    checkDate(warekiDate, REIWA_E)
                 }
                 else {
-                    return INCORRECT_VAL
+                   return getString(R.string.incorrect_val)
                 }
             }
 
             else {
-                return NO_ERA
+                return getString(R.string.no_era)
             }
 
 
@@ -178,12 +175,12 @@ public class JapaneseDate : Fragment(){
     }
 
     fun checkDate(date: String, era: String):String{
-        var resultDate = ""
+        var resultDate : String
         var year : Int
-        var month : String = ""
-        var day : String = ""
+        var month = ""
+        var day  = ""
         val slash = "/"
-        var kanji : String = ""
+        var kanji = ""
         try {
 
             year = Regex("[^0-9 ]").replace(date.substring(0, date.indexOf("年")),"").toInt()
@@ -211,11 +208,11 @@ public class JapaneseDate : Fragment(){
                              kanji = REIWA }
             }
 
-            if (!month.isNullOrEmpty()){
+            if (! month.isEmpty()){
                 month = month.padStart(2,'0')
                 resultDate = year.toString() + slash + month
 
-                if (!day.isNullOrEmpty()){
+                if (! day.isEmpty()){
                     day = day.padStart(2,'0')
                     resultDate = resultDate + slash + day
                 }
@@ -223,23 +220,33 @@ public class JapaneseDate : Fragment(){
                     resultDate = resultDate + slash + "01"
                 }
                 val format = SimpleDateFormat("yyyy/MM/dd")
-                format.setLenient(false);
-                format.parse(resultDate)
+                format.setLenient(false)
+                val checkFinalDate = Calendar.getInstance()
+                checkFinalDate.time = format.parse(resultDate)
+
+                // 日付＞＝元号の最初日
+                run loop@{
+                    GENGOU_DATA.forEach {
+                       val lstKanji = it["kanji"] as String
+                        // 日付が startDate より大きかったら終わり
+                        if (lstKanji.equals(kanji)) {
+                            val calStartDate = Calendar.getInstance()
+                            calStartDate.time = it["startDate"] as Date
+                            if(checkFinalDate.compareTo(calStartDate) < 0){
+                                return getString(R.string.incorrect_val)
+                            }
+                            return@loop
+                        }
+                    }
+                }
             }
             else
             {
                 resultDate = year.toString() + "年"
             }
-
-        }catch (e: Exception){
-
-            resultDate = "Error in parsing"
-        }finally{
             return resultDate
+        }catch (e: Exception){
+            resultDate = return getString(R.string.incorrect_val)
         }
-
     }
-
-
-
 }

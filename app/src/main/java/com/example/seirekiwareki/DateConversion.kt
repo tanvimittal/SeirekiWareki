@@ -24,104 +24,34 @@ import com.example.seirekiwareki.DAY
 import java.text.SimpleDateFormat
 import java.util.*
 
-public class DateConversion{
+class DateConversion{
 
     var era : String? = null
     fun seirekiToWareki(seirekiDate: String) : String{
 
         val df = SimpleDateFormat("yyyy/MM/dd")
-
-
-
         val date = df.parse(seirekiDate)
-
-
-
         val cal = Calendar.getInstance()
-
-
-
         cal.time = date
-
         var year = cal.get(Calendar.YEAR)
-
-
-
-        var month = cal.get(Calendar.MONTH)+1
-
-
-
-        var day = cal.get(Calendar.DAY_OF_MONTH)
-
-
-
-
-
-
-
+        val month = cal.get(Calendar.MONTH)+1
+        val day = cal.get(Calendar.DAY_OF_MONTH)
         run loop@{
-
-
-
             GENGOU_DATA.forEach {
-
-
-
                 val calStartDate = Calendar.getInstance()
-
-
-
                 calStartDate.time = it["startDate"] as Date
-
-
-
-
-
-
-
                 // 日付が startDate より大きかったら終わり
-
-
-
                 if (cal.compareTo(calStartDate) >= 0) {
-
                     era = it["kanji"] as String
-
-
-
                     year = year - calStartDate.get(Calendar.YEAR) + 1
-
-
-
                     return@loop
-
-
-
                 }
-
-
-
             }
-
-
-
         }
         return if (era == null) {
-
-
-
             "非対応です。"
-
-
-
         } else {
-
-
-
             "${era}${year}年${month}月${day}日"
-
-
-
         }
 
     }

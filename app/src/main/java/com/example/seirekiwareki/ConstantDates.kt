@@ -63,15 +63,15 @@ import java.util.*
     const val HEISEI_START_YEAR = 1989
     const val REIWA_START_YEAR = 2019
 
-val df = SimpleDateFormat("yyyy-MM-dd")
+val df = SimpleDateFormat("yyyy/MM/dd")
 
 val GENGOU_DATA = listOf(
 
     // 時代が新しいものを前に置く必要がある。
-    mapOf("startDate" to df.parse("2019-05-01"), "kanji" to REIWA),
-    mapOf("startDate" to df.parse("1989-01-07"), "kanji" to HEISEI),
-    mapOf("startDate" to df.parse("1926-12-25"), "kanji" to SHOWA),
-    mapOf("startDate" to df.parse("1912-07-30"), "kanji" to TAISHO),
-    mapOf("startDate" to df.parse("1868-10-23"), "kanji" to MEIJI)
+    mapOf("startDate" to df.parse("2019/05/01"), "kanji" to REIWA),
+    mapOf("startDate" to df.parse("1989/01/07"), "kanji" to HEISEI),
+    mapOf("startDate" to df.parse("1926/12/25"), "kanji" to SHOWA),
+    mapOf("startDate" to df.parse("1912/07/30"), "kanji" to TAISHO),
+    mapOf("startDate" to df.parse("1868/10/23"), "kanji" to MEIJI)
 
 )

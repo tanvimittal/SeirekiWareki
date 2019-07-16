@@ -3,7 +3,15 @@
     <string name="tab_text_1">西暦→和暦</string>
     <string name="tab_text_2">和暦→西暦</string>
     <string name="tab_text_3">情報</string>
-    <string name="j_date_input">和暦年月日フォーマットに入力してください</string>
+    <string name="j_date_input">平成31年1月1日</string>
     <string name="w_date_input">日付を選択してください</string>
+    <string name="no_j_input">和暦を入力してください</string>
+    <string name="no_era">元号を入力ください</string>
+    <string name="err_meiji">明治元号は明治1年10月23日から45明治7月29日まででした。</string>
+    <string name="err_taisho">大正元号は大正1年7月30日から15大正12月24日まででした。</string>
+    <string name="err_showa">昭和元号は昭和1年12月24日から64昭和1月6日まででした。</string>
+    <string name="err_heisei">平成元号は平成1年1月7日から31平成4月31日まででした。</string>
+    <string name="correct_val">正しい値を入力してください。</string>
+    <string name="incorrect_val">入力された値が正しくないです。元号について情報タブを参照してください。</string>
 
 </resources>
